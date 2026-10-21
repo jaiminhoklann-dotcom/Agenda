@@ -6,12 +6,13 @@
 <section id="summary" class="cards"></section>
 <section id="calendarView">
 <div class="toolbar"><button id="prev">‹</button><div><b id="period"></b><div class="switch"><button id="monthBtn" class="active">Mês</button><button id="weekBtn">Semana</button></div></div><button id="next">›</button></div>
-<div id="calendar"></div><div class="weekly"><h2>Fechamento da semana</h2><div id="weeklyReports"></div></div>
+<div id="calendar"></div><div class="monthly"><h2>Resumo mensal</h2><div id="monthlyFinance"></div></div><div class="weekly"><h2>Fechamento da semana</h2><div id="weeklyReports"></div></div>
 </section>
 <section id="clientsView" hidden><div class="sectionHead"><h2>Clientes</h2><button id="addClient">＋ Cliente</button></div><div id="clients"></div></section>
 <section id="servicesView" hidden><div class="sectionHead"><h2>Trabalhos</h2><button id="addService">＋ Trabalho</button></div><div id="services"></div></section>
+<section id="expensesView" hidden><div class="sectionHead"><h2>Despesas Fixas</h2><button id="addExpense">＋ Despesa</button></div><div id="expenseSummary"></div><div id="expenses"></div></section>
 </main>
-<nav><button id="navCalendar" class="active">📅<span>Calendário</span></button><button id="navAdd">＋<span>Novo</span></button><button id="navClients">👥<span>Clientes</span></button><button id="navServices">🛠<span>Trabalhos</span></button></nav>
+<nav><button id="navCalendar" class="active">📅<span>Calendário</span></button><button id="navAdd">＋<span>Novo</span></button><button id="navClients">👥<span>Clientes</span></button><button id="navServices">🛠<span>Trabalhos</span></button><button id="navExpenses">💳<span>Despesas</span></button></nav>
 
 <dialog id="entryDlg"><form id="entryForm"><button type="button" class="x">×</button><h2>Novo item</h2>
 <div class="seg"><button type="button" data-kind="freela" class="active">Freela</button><button type="button" data-kind="compromisso">Compromisso</button></div><input type="hidden" name="kind" value="freela">
@@ -28,5 +29,8 @@
 
 <dialog id="serviceDlg"><form id="serviceForm"><button type="button" class="x">×</button><h2>Novo trabalho</h2>
 <label>Nome do trabalho<input name="name" required placeholder="Ex.: Operação de luz"></label><label>Valor padrão (R$)<input name="price" type="number" step=".01" required></label>
+<div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
+<dialog id="expenseDlg"><form id="expenseForm"><button type="button" class="x">×</button><h2>Despesa fixa</h2>
+<label>Descrição<input name="name" required placeholder="Ex.: Internet"></label><label>Valor (R$)<input name="value" type="number" step=".01" required></label><label>Dia do vencimento<input name="dueDay" type="number" min="1" max="31" required placeholder="Ex.: 10"></label>
 <div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
 <script src="app.js"></script></body></html>
