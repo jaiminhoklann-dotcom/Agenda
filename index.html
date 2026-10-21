@@ -1,0 +1,32 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071019"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>Agenda Shows</title></head>
+<body><main>
+<header><div><small>MEUS FREELAS</small><h1>Agenda Shows</h1></div><button class="round" id="quickAdd">＋</button></header>
+<section id="summary" class="cards"></section>
+<section id="calendarView">
+<div class="toolbar"><button id="prev">‹</button><div><b id="period"></b><div class="switch"><button id="monthBtn" class="active">Mês</button><button id="weekBtn">Semana</button></div></div><button id="next">›</button></div>
+<div id="calendar"></div><div class="weekly"><h2>Fechamento da semana</h2><div id="weeklyReports"></div></div>
+</section>
+<section id="clientsView" hidden><div class="sectionHead"><h2>Clientes</h2><button id="addClient">＋ Cliente</button></div><div id="clients"></div></section>
+<section id="servicesView" hidden><div class="sectionHead"><h2>Trabalhos</h2><button id="addService">＋ Trabalho</button></div><div id="services"></div></section>
+</main>
+<nav><button id="navCalendar" class="active">📅<span>Calendário</span></button><button id="navAdd">＋<span>Novo</span></button><button id="navClients">👥<span>Clientes</span></button><button id="navServices">🛠<span>Trabalhos</span></button></nav>
+
+<dialog id="entryDlg"><form id="entryForm"><button type="button" class="x">×</button><h2>Novo item</h2>
+<div class="seg"><button type="button" data-kind="freela" class="active">Freela</button><button type="button" data-kind="compromisso">Compromisso</button></div><input type="hidden" name="kind" value="freela">
+<div id="freelaFields"><label>Cliente<div class="inline"><select name="clientId" id="clientSelect"></select><button type="button" id="inlineClient">＋</button></div></label>
+<fieldset><legend>Trabalhos</legend><div id="serviceChecks"></div></fieldset><div class="total">Total <b id="serviceTotal">R$ 0,00</b></div>
+<label>Valor (editável)<input id="value" name="value" type="number" step=".01"></label></div>
+<div id="commitFields" hidden><label>Compromisso<input name="title" placeholder="Ex.: Dentista"></label></div>
+<label>Data<input id="entryDate" name="date" type="date" required></label><label>Local<input name="location" placeholder="Opcional"></label><label>Observações<textarea name="notes"></textarea></label>
+<div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
+
+<dialog id="clientDlg"><form id="clientForm"><button type="button" class="x">×</button><h2>Novo cliente</h2>
+<label>Nome / empresa<input name="name" required></label><label>WhatsApp (opcional)<input name="phone" inputmode="tel" placeholder="Ex.: 5547999999999"></label>
+<label>Observações<textarea name="notes"></textarea></label><div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
+
+<dialog id="serviceDlg"><form id="serviceForm"><button type="button" class="x">×</button><h2>Novo trabalho</h2>
+<label>Nome do trabalho<input name="name" required placeholder="Ex.: Operação de luz"></label><label>Valor padrão (R$)<input name="price" type="number" step=".01" required></label>
+<div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
+<script src="app.js"></script></body></html>
