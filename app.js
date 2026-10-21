@@ -5,7 +5,7 @@ let cursor=new Date(),mode='month';
 const iso=d=>{let x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)},mon=d=>{d=new Date(d);let n=d.getDay()||7;d.setDate(d.getDate()-n+1);d.setHours(0,0,0,0);return d},client=id=>clients.find(c=>c.id===id);
 function persist(){localStorage.setItem('fa_entries',JSON.stringify(entries));localStorage.setItem('fa_clients',JSON.stringify(clients));localStorage.setItem('fa_paid',JSON.stringify(paid));localStorage.setItem('fa_services',JSON.stringify(services));render()}
 function summary(){let f=entries.filter(e=>e.kind==='freela'),r=f.reduce((s,e)=>s+(paid[e.id]?+e.value:0),0),p=f.reduce((s,e)=>s+(!paid[e.id]?+e.value:0),0);$('#summary').innerHTML=`<div class=card><span>Recebido</span><b>${money(r)}</b></div><div class=card><span>A receber</span><b>${money(p)}</b></div>`}
-function dayCell(d,other=false){let date=iso(d),el=document.createElement('div');el.className='day'+(date===iso(new Date())?' today':'')+(other?' other':'');el.dataset.date=date;el.innerHTML=`<div class=num>${d.getDate()}</div>`;entries.filter(e=>e.date===date).slice(0,3).forEach(e=>{let x=document.createElement('div');x.className='event '+e.kind;x.textContent=e.kind==='freela'?((client(e.clientId)?.name||'Cliente')+' '+money(e.value)):e.title;el.appendChild(x)});return el}
+function dayCell(d,other=false){let date=iso(d),el=document.createElement('div');el.className='day'+(date===iso(new Date())?' today':'')+(other?' other':'');el.dataset.date=date;el.innerHTML=`<div class=num>${d.getDate()}</div>`;entries.filter(e=>e.date===date).slice(0,3).forEach(e=>{let x=document.createElement('div');x.className='event '+e.kind;x.dataset.id=e.id;x.textContent=e.kind==='freela'?((client(e.clientId)?.name||'Cliente')+' '+money(e.value)):e.title;el.appendChild(x)});return el}
 function renderCalendar(){let cal=$('#calendar');cal.innerHTML='';let heads=document.createElement('div');heads.className=mode;['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].forEach(x=>{let h=document.createElement('div');h.className='weekHead';h.textContent=x;heads.appendChild(h)});cal.appendChild(heads);
 if(mode==='month'){let y=cursor.getFullYear(),m=cursor.getMonth(),first=new Date(y,m,1),start=mon(first);$('#period').textContent=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});let g=document.createElement('div');g.className='month';for(let i=0;i<42;i++){let d=new Date(start);d.setDate(start.getDate()+i);g.appendChild(dayCell(d,d.getMonth()!==m))}cal.appendChild(g)}
 else{let s=mon(cursor),g=document.createElement('div');g.className='week';$('#period').textContent=`${s.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})} – `;for(let i=0;i<7;i++){let d=new Date(s);d.setDate(s.getDate()+i);g.appendChild(dayCell(d))}cal.appendChild(g)}renderReports()}
@@ -17,15 +17,36 @@ function renderServices(){let b=$('#services');b.innerHTML=services.map(s=>`<div
 function renderChecks(){let b=$('#serviceChecks');b.innerHTML=services.map(s=>`<label class=serviceCheck><input type=checkbox name=serviceIds value="${s.id}" data-price="${s.price}"><span>${s.name}</span><b>${money(s.price)}</b></label>`).join('');$$('input[name=serviceIds]').forEach(x=>x.onchange=calc)}
 function calc(){let t=$$('input[name=serviceIds]:checked').reduce((s,x)=>s+ +x.dataset.price,0);$('#serviceTotal').textContent=money(t);$('#value').value=t||''}
 function render(){summary();renderCalendar();renderClients();renderServices()}
-function openEntry(date=iso(new Date())){$('#entryDate').value=date;fillClients();renderChecks();$('#entryDlg').showModal()}
+function openEntry(date=iso(new Date())){let f=$('#entryForm');delete f.dataset.edit;f.reset();document.querySelector('.editDelete')?.remove();$('[name=kind]').value='freela';$$('.seg button').forEach(b=>b.classList.toggle('active',b.dataset.kind==='freela'));$('#freelaFields').hidden=false;$('#commitFields').hidden=true;$('#entryDate').value=date;fillClients();renderChecks();$('#serviceTotal').textContent=money(0);$('#entryDlg').showModal()}
+function openEditEntry(id){
+ let o=entries.find(x=>x.id===id); if(!o)return;
+ let f=$('#entryForm'); f.reset(); document.querySelector('.editDelete')?.remove(); f.dataset.edit=id; fillClients(); renderChecks();
+ $('[name=kind]').value=o.kind;
+ $$('.seg button').forEach(b=>b.classList.toggle('active',b.dataset.kind===o.kind));
+ $('#freelaFields').hidden=o.kind!=='freela'; $('#commitFields').hidden=o.kind!=='compromisso';
+ f.date.value=o.date||''; f.location.value=o.location||''; f.notes.value=o.notes||'';
+ if(o.kind==='freela'){
+   f.clientId.value=o.clientId||'';
+   (o.serviceIds||[]).forEach(id=>{let c=document.querySelector(`input[name=serviceIds][value="${id}"]`);if(c)c.checked=true});
+   $('#value').value=o.value||0; $('#serviceTotal').textContent=money(o.value||0);
+ } else f.title.value=o.title||'';
+ let del=document.createElement('button');del.type='button';del.className='danger editDelete';del.textContent='Excluir';
+ let actions=f.querySelector('.actions'); actions.prepend(del);
+ del.onclick=()=>{if(confirm('Excluir este item da agenda?')){entries=entries.filter(x=>x.id!==id);delete paid[id];$('#entryDlg').close();persist()}};
+ $('#entryDlg').showModal();
+}
 function showView(id,nav){['calendarView','clientsView','servicesView'].forEach(x=>$('#'+x).hidden=x!==id);['navCalendar','navClients','navServices'].forEach(x=>$('#'+x).classList.toggle('active',x===nav))}
 $('#quickAdd').onclick=()=>openEntry();$('#navAdd').onclick=()=>openEntry();$('#addClient').onclick=()=>$('#clientDlg').showModal();$('#inlineClient').onclick=()=>$('#clientDlg').showModal();$('#addService').onclick=()=>$('#serviceDlg').showModal();
 $$('.cancel,.x').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 $$('.seg button').forEach(b=>b.onclick=()=>{$$('.seg button').forEach(x=>x.classList.remove('active'));b.classList.add('active');let k=b.dataset.kind;$('[name=kind]').value=k;$('#freelaFields').hidden=k!=='freela';$('#commitFields').hidden=k!=='compromisso'});
 $('#clientForm').onsubmit=e=>{e.preventDefault();let o=Object.fromEntries(new FormData(e.target)),id=e.target.dataset.edit;o.id=id||crypto.randomUUID();o.phone=o.phone.replace(/\D/g,'');if(id)clients=clients.map(c=>c.id===id?o:c);else clients.push(o);delete e.target.dataset.edit;e.target.reset();$('#clientDlg').close();persist()};
 $('#serviceForm').onsubmit=e=>{e.preventDefault();let o=Object.fromEntries(new FormData(e.target)),id=e.target.dataset.edit;o.id=id||crypto.randomUUID();o.price=+o.price;if(id)services=services.map(s=>s.id===id?o:s);else services.push(o);delete e.target.dataset.edit;e.target.reset();$('#serviceDlg').close();persist()};
-$('#entryForm').onsubmit=e=>{e.preventDefault();let fd=new FormData(e.target),o=Object.fromEntries(fd);o.id=crypto.randomUUID();if(o.kind==='freela'){if(!o.clientId)return alert('Selecione um cliente.');let ids=fd.getAll('serviceIds');if(!ids.length)return alert('Selecione pelo menos um trabalho.');o.serviceIds=ids;o.serviceNames=ids.map(id=>services.find(s=>s.id===id)?.name).filter(Boolean);o.value=+o.value||0}else{o.value=0;if(!o.title)return alert('Digite o compromisso.')}entries.push(o);e.target.reset();$('#serviceTotal').textContent=money(0);$('#entryDlg').close();persist()};
-$('#calendar').onclick=e=>{let d=e.target.closest('.day');if(d?.dataset.date)openEntry(d.dataset.date)};
+$('#entryForm').onsubmit=e=>{e.preventDefault();let fd=new FormData(e.target),o=Object.fromEntries(fd),editId=e.target.dataset.edit;o.id=editId||crypto.randomUUID();if(o.kind==='freela'){if(!o.clientId)return alert('Selecione um cliente.');let ids=fd.getAll('serviceIds');if(!ids.length)return alert('Selecione pelo menos um trabalho.');o.serviceIds=ids;o.serviceNames=ids.map(id=>services.find(s=>s.id===id)?.name).filter(Boolean);o.value=+o.value||0}else{o.value=0;if(!o.title)return alert('Digite o compromisso.')}if(editId)entries=entries.map(x=>x.id===editId?o:x);else entries.push(o);delete e.target.dataset.edit;e.target.reset();$('#serviceTotal').textContent=money(0);$('#entryDlg').close();persist()};
+$('#calendar').onclick=e=>{
+  let ev=e.target.closest('.event');
+  if(ev?.dataset.id){ openEditEntry(ev.dataset.id); return; }
+  let d=e.target.closest('.day'); if(d?.dataset.date)openEntry(d.dataset.date)
+};
 $('#prev').onclick=()=>{mode==='month'?cursor.setMonth(cursor.getMonth()-1):cursor.setDate(cursor.getDate()-7);renderCalendar()};$('#next').onclick=()=>{mode==='month'?cursor.setMonth(cursor.getMonth()+1):cursor.setDate(cursor.getDate()+7);renderCalendar()};
 $('#monthBtn').onclick=()=>{mode='month';$('#monthBtn').classList.add('active');$('#weekBtn').classList.remove('active');renderCalendar()};$('#weekBtn').onclick=()=>{mode='week';$('#weekBtn').classList.add('active');$('#monthBtn').classList.remove('active');renderCalendar()};
 $('#weeklyReports').onclick=e=>{if(e.target.dataset.pay){paid[e.target.dataset.pay]=!paid[e.target.dataset.pay];persist()}if(e.target.dataset.wa){let cid=e.target.dataset.wa,c=client(cid);if(!c?.phone)return alert('Cadastre o WhatsApp deste cliente.');
