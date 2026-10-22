@@ -77,3 +77,55 @@ nav span{
   overflow:visible!important;
 }
 @media(min-width:700px){nav{left:50%!important;right:auto!important;width:min(620px,calc(100% - 24px))!important;transform:translateX(-50%)!important}}
+
+
+/* v17 — barra inferior full-width no iPhone; regra final para vencer estilos antigos */
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+#bottomNav{
+  position:fixed!important;
+  z-index:9999!important;
+  left:10px!important;
+  right:10px!important;
+  bottom:0!important;
+  width:auto!important;
+  max-width:none!important;
+  transform:none!important;
+  margin:0!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr)!important;
+  gap:2px!important;
+  padding:8px 4px calc(8px + env(safe-area-inset-bottom))!important;
+  border:1px solid #5b421c!important;
+  border-bottom:0!important;
+  border-radius:20px 20px 0 0!important;
+}
+#bottomNav>button{
+  width:auto!important;
+  max-width:none!important;
+  min-width:0!important;
+  min-height:62px!important;
+  margin:0!important;
+  padding:7px 0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  font-size:21px!important;
+  line-height:1!important;
+  overflow:visible!important;
+}
+#bottomNav>button>span{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  font-size:10px!important;
+  line-height:12px!important;
+  font-weight:800!important;
+  letter-spacing:-.35px!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+}
+@media(max-width:370px){#bottomNav{left:6px!important;right:6px!important}#bottomNav>button>span{font-size:9px!important;letter-spacing:-.5px!important}}

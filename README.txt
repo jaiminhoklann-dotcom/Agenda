@@ -30,3 +30,6 @@ Observação: os dados ficam armazenados localmente no navegador/aparelho. A sin
 - Mantém relatório PDF com logo Jaiminho Lightning e forma de recebimento PIX configurável.
 
 - v14: redesign premium preto e dourado inspirado no mockup Jaiminho Lightning.
+
+
+VERSÃO v17: barra inferior corrigida para ocupar toda a largura útil no iPhone, com 5 itens em colunas iguais e sem sobreposição.
