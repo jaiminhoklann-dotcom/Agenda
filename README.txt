@@ -28,3 +28,5 @@ Observação: os dados ficam armazenados localmente no navegador/aparelho. A sin
 
 - v13: etiquetas de cores por cliente; cor aparece nos cards de clientes e nos eventos da agenda.
 - Mantém relatório PDF com logo Jaiminho Lightning e forma de recebimento PIX configurável.
+
+- v14: redesign premium preto e dourado inspirado no mockup Jaiminho Lightning.
