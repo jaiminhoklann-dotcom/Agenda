@@ -1,8 +1,8 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071019"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>Agenda Shows</title></head>
-<body><main>
-<header><div><small>MEUS FREELAS</small><h1>Agenda Shows</h1></div><button class="round" id="quickAdd">＋</button></header>
+<meta name="theme-color" content="#050b11"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Agenda Shows"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>Agenda Shows</title></head>
+<body><div id="splash"><img src="logo-jaiminho.png" alt="Jaiminho Lightning"><div>AGENDA SHOWS</div></div><main>
+<header class="brandHeader"><div class="brandIdentity"><img src="logo-jaiminho.png" class="brandLogo" alt="Jaiminho Lightning"><div class="brandText"><small>JAIMINHO LIGHTNING</small><h1>Agenda Shows</h1></div></div><button class="round" id="quickAdd" aria-label="Novo item">＋</button></header>
 <section id="summary" class="cards"></section>
 <section id="calendarView">
 <div class="toolbar"><button id="prev">‹</button><div><b id="period"></b><div class="switch"><button id="monthBtn" class="active">Mês</button><button id="weekBtn">Semana</button></div></div><button id="next">›</button></div>
@@ -11,8 +11,9 @@
 <section id="clientsView" hidden><div class="sectionHead"><h2>Clientes</h2><button id="addClient">＋ Cliente</button></div><div id="clients"></div></section>
 <section id="servicesView" hidden><div class="sectionHead"><h2>Trabalhos</h2><button id="addService">＋ Trabalho</button></div><div id="services"></div></section>
 <section id="expensesView" hidden><div class="sectionHead"><h2>Despesas Fixas</h2><button id="addExpense">＋ Despesa</button></div><div id="expenseSummary"></div><div id="expenses"></div></section>
+<section id="paymentView" hidden><div class="sectionHead"><h2>Recebimento</h2></div><div class="paymentCard"><p class="muted">Escolha qual chave PIX será enviada ao cliente no relatório do WhatsApp.</p><label>Tipo da chave<select id="pixType"><option value="CPF">CPF</option><option value="Celular">Celular</option><option value="E-mail">E-mail</option><option value="Chave aleatória">Chave aleatória</option></select></label><label>Chave PIX<input id="pixKey" placeholder="Digite a chave PIX"></label><label>Nome do favorecido (opcional)<input id="pixName" placeholder="Ex.: Jaiminho"></label><button id="savePayment" type="button">Salvar forma de recebimento</button><div id="paymentPreview" class="paymentPreview"></div></div></section>
 </main>
-<nav><button id="navCalendar" class="active">📅<span>Calendário</span></button><button id="navAdd">＋<span>Novo</span></button><button id="navClients">👥<span>Clientes</span></button><button id="navServices">🛠<span>Trabalhos</span></button><button id="navExpenses">💳<span>Despesas</span></button></nav>
+<nav><button id="navCalendar" class="active">📅<span>Calendário</span></button><button id="navAdd">＋<span>Novo</span></button><button id="navClients">👥<span>Clientes</span></button><button id="navServices">🛠<span>Trabalhos</span></button><button id="navExpenses">💳<span>Despesas</span></button><button id="navPayment">💰<span>Receber</span></button></nav>
 
 <dialog id="entryDlg"><form id="entryForm"><button type="button" class="x">×</button><h2>Novo item</h2>
 <div class="seg"><button type="button" data-kind="freela" class="active">Freela</button><button type="button" data-kind="compromisso">Compromisso</button></div><input type="hidden" name="kind" value="freela">
@@ -25,7 +26,7 @@
 
 <dialog id="clientDlg"><form id="clientForm"><button type="button" class="x">×</button><h2>Novo cliente</h2>
 <label>Nome / empresa<input name="name" required></label><label>WhatsApp (opcional)<input name="phone" inputmode="tel" placeholder="Ex.: 5547999999999"></label>
-<label>Observações<textarea name="notes"></textarea></label><div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
+<label>Cor do cliente<div class="clientColorRow"><input name="color" id="clientColor" type="color" value="#d89b2b"><span id="clientColorPreview">Essa cor aparecerá na agenda</span></div></label><label>Observações<textarea name="notes"></textarea></label><div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
 
 <dialog id="serviceDlg"><form id="serviceForm"><button type="button" class="x">×</button><h2>Novo trabalho</h2>
 <label>Nome do trabalho<input name="name" required placeholder="Ex.: Operação de luz"></label><label>Valor padrão (R$)<input name="price" type="number" step=".01" required></label>
@@ -33,4 +34,4 @@
 <dialog id="expenseDlg"><form id="expenseForm"><button type="button" class="x">×</button><h2>Despesa fixa</h2>
 <label>Descrição<input name="name" required placeholder="Ex.: Internet"></label><label>Valor (R$)<input name="value" type="number" step=".01" required></label><label>Dia do vencimento<input name="dueDay" type="number" min="1" max="31" required placeholder="Ex.: 10"></label>
 <div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
-<script src="app.js"></script></body></html>
+<script src="app.js"></script><script>window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),650));</script></body></html>

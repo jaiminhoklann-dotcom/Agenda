@@ -23,3 +23,8 @@ Inclui:
 Observação: os dados ficam armazenados localmente no navegador/aparelho. A sincronização automática com Google Calendar ainda requer integração com a API do Google.
 
 - v3: corrigido botão WhatsApp. Números brasileiros com DDD agora recebem +55 automaticamente quando necessário.
+
+- v12: relatório semanal com logo Jaiminho Lightning em layout A4, botão PDF/Imprimir e PIX configurável no relatório e WhatsApp.
+
+- v13: etiquetas de cores por cliente; cor aparece nos cards de clientes e nos eventos da agenda.
+- Mantém relatório PDF com logo Jaiminho Lightning e forma de recebimento PIX configurável.
