@@ -1,6 +1,6 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050b11"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Agenda Shows"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>Agenda Shows</title></head>
+<meta name="theme-color" content="#050b11"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Agenda Shows"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css?v=16"><title>Agenda Shows</title></head>
 <body><div id="splash"><img src="logo-jaiminho.png" alt="Jaiminho Lightning"><div>AGENDA SHOWS</div></div><main>
 <header class="brandHeader"><div class="brandIdentity"><img src="logo-jaiminho.png" class="brandLogo" alt="Jaiminho Lightning"><div class="brandText"><small>JAIMINHO LIGHTNING</small><h1>Agenda Shows</h1></div></div><button class="round" id="quickAdd" aria-label="Novo item">＋</button></header>
 <section id="summary" class="cards"></section>
@@ -34,4 +34,4 @@
 <dialog id="expenseDlg"><form id="expenseForm"><button type="button" class="x">×</button><h2>Despesa fixa</h2>
 <label>Descrição<input name="name" required placeholder="Ex.: Internet"></label><label>Valor (R$)<input name="value" type="number" step=".01" required></label><label>Dia do vencimento<input name="dueDay" type="number" min="1" max="31" required placeholder="Ex.: 10"></label>
 <div class="actions"><button type="button" class="cancel">Cancelar</button><button type="submit">Salvar</button></div></form></dialog>
-<script src="app.js"></script><script>window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),650));</script></body></html>
+<script src="app.js?v=16"></script><script>window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),650));</script></body></html>
